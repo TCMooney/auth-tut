@@ -17,12 +17,12 @@ module.exports = function validateRegisterInput(data) {
 
     //Email checks
     if (Validator.isEmpty(data.email)) {
-        errors.email = "Name field is required";
+        errors.email = "Email field is required";
     }
 
     //Password checks
     if (Validator.isEmpty(data.password)) {
-        errors.password = "Name field is required";
+        errors.password = "Password field is required";
     }
 
     if (Validator.isEmpty(data.password2)) {

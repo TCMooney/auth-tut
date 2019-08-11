@@ -28,13 +28,11 @@ router.post('/register', (req, res) => {
 
             bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(newUser.password, salt, (err, hash) => {
-                    console.log(hash);
-                    console.log(newUser)
-                    // if (err) throw err;
-                    // newUser.password = hash;
-                    // newUser.save()
-                    //     .then(user => res.json(user))
-                    //     .catch(err => console.log(err));
+                    if (err) throw err;
+                    newUser.password = hash;
+                    newUser.save()
+                        .then(user => res.json(user))
+                        .catch(err => console.log(err));
                 });
             });
         }
@@ -63,12 +61,12 @@ router.post('/login', (req, res) => {
             };
         jwt.sign(
             payload, 
-            keys.secretOrkey, 
+            keys.secretOrKey, 
             { expiresIn: 31556926 },
             (err, token) => {
                 res.json({
                     success: true,
-                    token: "Bearer" + token
+                    token: "Bearer " + token
                 });
             });
         } else {
