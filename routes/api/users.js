@@ -10,6 +10,16 @@ const validateLoginInput = require('../../validation/login');
 
 const User = require('../../models/userModel');
 
+router.get("/read", (request, response) => {
+    User.find((error, users) => {
+        if (error) {
+            console.log(error)
+        } else {
+            response.json(users)
+        }
+    })
+})
+
 router.post('/register', (req, res) => {
     const { errors, isValid } = validateRegisterInput(req.body);
     if (!isValid) {
@@ -45,7 +55,6 @@ router.post('/login', (req, res) => {
     if (!isValid) {
         return res.status(400).json(errors);
     }
-
     const email = req.body.email;
     const password = req.body.password;
 
@@ -59,20 +68,20 @@ router.post('/login', (req, res) => {
                 id: user.id,
                 name: user.name
             };
-        jwt.sign(
-            payload, 
-            keys.secretOrKey, 
-            { expiresIn: 31556926 },
-            (err, token) => {
-                res.json({
-                    success: true,
-                    token: "Bearer " + token
+            jwt.sign(
+                payload, 
+                keys.secretOrKey, 
+                { expiresIn: 31556926 },
+                (err, token) => {
+                    res.json({
+                        success: true,
+                        token: "Bearer " + token
+                    });
                 });
-            });
-        } else {
-            return res.status(400).json({ passwordincorrect: "Password incorrect"});
-        }
-    });
+            } else {
+                return res.status(400).json({ passwordincorrect: "Password incorrect"});
+            }
+        });
     });
 });
 
